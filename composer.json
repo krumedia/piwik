@@ -1,5 +1,5 @@
 {
-    "name": "org_heigl/piwik",
+    "name": "krumedia/piwik",
     "description": "Easy way to integrate piwik (http://piwik.org) analysis into a Zend-Framework Project ",
     "type": "library",
     "license": "MIT",
