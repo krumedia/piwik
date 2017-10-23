@@ -31,8 +31,6 @@
 
 namespace OrgHeiglPiwik;
 
-
-use Zend\EventManager\StaticEventManager;
 use Zend\Mvc\MvcEvent;
 use Zend\View\ViewEvent;
 use Zend\View\View;
@@ -59,22 +57,17 @@ EOT;
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function onBootstrap(MvcEvent $e)
-    {
-        $this->serviceManager = $e->getApplication()->getServiceManager();
-    }
+	public function onBootstrap(MvcEvent $e)
+	{
+		$this->serviceManager = $e->getApplication()->getServiceManager();
+		// Attach Event to EventManager
+		$eventManager = $e->getApplication()->getEventManager()->getSharedManager();
 
-    public function init()
-    {
-        // Attach Event to EventManager
-        $events = StaticEventManager::getInstance ();
-
-        // Add event of authentication before dispatch
-        $events->attach('Zend\View\View', ViewEvent::EVENT_RENDERER_POST, array(
-            $this,
-            'addPiwikCode'
-        ), 110 );
-    }
+		$eventManager->attach('Zend\View\View', ViewEvent::EVENT_RENDERER_POST, array(
+			$this,
+			'addPiwikCode'
+		), 110 );
+	}
 
     /**
      * Include the PIWIK-Tracking-code into every page.
